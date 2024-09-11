@@ -38,3 +38,12 @@
     transform: rotate(360deg);
   }
 }
+.ant-drawer-header {
+  background-color: skyblue;
+  border-radius: 0;
+}
+.ant-drawer-title{
+  color:white
+
+}
+
