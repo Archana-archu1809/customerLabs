@@ -2,7 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import { Drawer, Input, Select, Button } from "antd";
+import { Drawer, Input, Select, Button, notification } from "antd";
 import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
 const { Option } = Select;
 
@@ -30,6 +30,13 @@ const Segment = () => {
   const [fields, setFields] = useState([]);
   const [schema, setSchema] = useState("");
   const [selected, setSelected] = useState([]);
+
+  const [api, contextHolder] = notification.useNotification();
+  const openNotification = (type) => {
+    api[type]({
+      message: "Schema Added Successfully"
+    });
+  };
 
   const showDrawer = () => {
     setOpen(true);
@@ -78,7 +85,7 @@ const Segment = () => {
     setSegment("");
     setSchema("");
     setOpen(false);
-    
+    openNotification("success");
   };
   const handleCancel = () => {
     setOpen(false);
@@ -87,6 +94,7 @@ const Segment = () => {
   };
   return (
     <>
+      {contextHolder}
       <Button
         onClick={showDrawer}
         variant="outline-light"
@@ -103,6 +111,12 @@ const Segment = () => {
             onChange={(e) => setSegment(e.target.value)}
             required
           />
+        </div>
+        <div className="mb-3">
+          <Button onClick={handleAddField} type="link">
+            <PlusOutlined />
+            Add new schema
+          </Button>
         </div>
         <div className="mb-3">
           <Select
@@ -123,12 +137,7 @@ const Segment = () => {
             })}
           </Select>
         </div>
-        <div className="mb-3">
-          <Button onClick={handleAddField} type="link">
-            <PlusOutlined />
-            Add new schema
-          </Button>
-        </div>
+
         {fields.map((field, index) => (
           <>
             <div className="mb-3">
